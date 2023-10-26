@@ -101,20 +101,26 @@ func SaveToHtml(fileName string, contents []string) error {
 		fileName = filepath.Join("./output", fileName)
 	}
 
+	// 创建 HTML 表格的表头
 	tableContent := "<tr><th style=\"border: 2px solid black;\" bgcolor=\"#66FFFF\"><font color=\"black\">序号</font></th><th style=\"border: 2px solid black;\" bgcolor=\"#66FFFF\"><font color=\"black\">结果列表</font></th></tr>"
+
+	// 遍历内容切片，生成 HTML 表格的行
 	for i, rs := range contents {
 		row := fmt.Sprintf("<tr><td style=\"border: 2px solid black; text-align: center;\">%d</td><td style=\"border: 2px solid black;\">%s</td></tr>", i+1, rs)
 		tableContent += row
 	}
 
-	htmlConent := fmt.Sprintf("<table style=\"border-collapse: collapse; border: 1px solid black;\">%s</table>", tableContent)
-	//result := strings.Join(contents, "<br>")
-	if err := os.WriteFile(fileName, []byte(htmlConent), 0644); err != nil {
+	// 生成最终的 HTML 内容，包含表格和样式
+	htmlContent := fmt.Sprintf("<html><head><style>table {margin: 0 auto;}</style></head><body><table style=\"border-collapse: collapse; border: 1px solid black;\">%s</table></body></html>", tableContent)
+
+	// 将 HTML 内容写入文件
+	if err := os.WriteFile(fileName, []byte(htmlContent), 0644); err != nil {
 		return err
 	}
-	s := fmt.Sprintf("[+] 扫描结果已保存在%v文件中", fileName)
+
+	// 打印保存成功的信息
+	s := fmt.Sprintf("[+] 扫描结果已保存在 %v 文件中", fileName)
 	colorOutput.Colorful.WithFrontColor("green").Println(s)
 
 	return nil
-
 }
