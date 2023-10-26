@@ -73,14 +73,6 @@ func SaveToExcel(fileName, sheetName string, content [][]interface{}, A, B strin
 		return err
 	}
 
-	//保存文件
-	// if !strings.Contains(fileName, ".") {
-	// 	fileName = "./output/" + fileName + ".xlsx"
-	// } else if strings.Split(fileName, ".")[1] != "xlsx" {
-	// 	fileName = "./output/" + fmt.Sprintf("%v.xlsx", strings.Split(fileName, ".")[0])
-	// } else {
-	// 	fileName = "./output/" + fileName
-	// }
 	extension := filepath.Ext(fileName)
 	if extension == "" {
 		fileName = filepath.Join("./output", fileName+".xlsx")
