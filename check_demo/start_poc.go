@@ -319,14 +319,6 @@ func readFile(path string) []string {
 }
 
 func checkUrl(client *http.Client, url string, timeout time.Duration) bool {
-	// tr := &http.Transport{
-	// 	TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	// }
-
-	// client := http.Client{
-	// 	Transport: tr,
-	// 	Timeout:   timeout,
-	// }
 
 	resp, err := client.Get(url)
 	if err != nil {
@@ -341,7 +333,7 @@ func checkUrl(client *http.Client, url string, timeout time.Duration) bool {
 func Put_URL(client *http.Client, ch chan string, path string, ctx context.Context) {
 	url := readFile(path)
 	for _, v := range url {
-		if !strings.HasPrefix(v, "http://") || !strings.HasPrefix(v, "https://") {
+		if !strings.HasPrefix(v, "http://") && !strings.HasPrefix(v, "https://") {
 			v = strings.Join([]string{"http://", v}, "")
 		}
 		if checkUrl(client, v, time.Second*2) {
